@@ -7,13 +7,11 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 
-// Подключение к MongoDB
 mongoose.connect('mongodb://localhost:27017/cyberguard', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });
 
-// Определение схем
 const UserSchema = new mongoose.Schema({
     login: { type: String, unique: true, required: true },
     password: { type: String, required: true },
@@ -31,7 +29,6 @@ const AchievementSchema = new mongoose.Schema({
 });
 const Achievement = mongoose.model('Achievement', AchievementSchema);
 
-// Регистрация пользователя
 app.post('/register', async (req, res) => {
     const { login, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -44,14 +41,12 @@ app.post('/register', async (req, res) => {
     }
 });
 
-// Проверка логина
 app.get('/check-login', async (req, res) => {
     const login = req.query.login;
     const user = await User.findOne({ login });
     res.send(user ? "false" : "true");
 });
 
-// Авторизация
 app.post('/login', async (req, res) => {
     const { login, password } = req.body;
     const user = await User.findOne({ login });
@@ -62,7 +57,6 @@ app.post('/login', async (req, res) => {
     res.json({ token, player_id: user.player_id });
 });
 
-// Получение данных пользователя
 app.get('/user-data', async (req, res) => {
     const { login, player_id } = req.query;
     try {
