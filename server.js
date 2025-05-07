@@ -7,6 +7,7 @@ require('dotenv').config();
 const app = express();
 app.use(express.json());
 
+console.log(process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -46,10 +47,12 @@ app.post('/register', async (req, res) => {
 app.get('/check-login', async (req, res) => {
     const login = req.query.login;
     const user = await User.findOne({ login });
+    console.log('Here we go in /check-login');
     res.send(user ? "false" : "true");
 });
 
 app.post('/login', async (req, res) => {
+    console.log('Here we go in login');
     const { login, password } = req.body;
     const user = await User.findOne({ login });
     if (!user || !(await bcrypt.compare(password, user.password))) {
