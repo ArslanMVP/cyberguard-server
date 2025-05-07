@@ -8,11 +8,10 @@ const jwt = require('jsonwebtoken');
 const app = express();
 app.use(express.json());
 
-// Проверка MONGO_URI
 if (!process.env.MONGO_URI || !process.env.MONGO_URI.startsWith('mongodb')) {
     console.error('ERROR: MONGO_URI is not set or invalid');
     console.error('Current MONGO_URI:', process.env.MONGO_URI);
-    process.exit(1); // Остановить сервер
+    process.exit(1);
 } else {
     console.log('MONGO_URI is valid. Trying to connect...');
 }
@@ -22,7 +21,7 @@ mongoose.connect(process.env.MONGO_URI, { dbName: 'mydatabase' })
     .catch((err) => {
         console.error('MongoDB connection error:');
         console.error(err.message);
-        process.exit(1); // Остановить сервер при ошибке подключения
+        process.exit(1);
     });
 
 
