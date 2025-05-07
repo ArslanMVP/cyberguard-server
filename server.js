@@ -8,12 +8,10 @@ const app = express();
 app.use(express.json());
 
 console.log(process.env.MONGO_URI);
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log('Connected to MongoDB'))
-.catch((err) => console.error('MongoDB connection error:', err));
+mongoose.connect(process.env.MONGO_URI, { dbName: 'mydatabase' })
+    .then(() => console.log('MongoDB connected'))
+    .catch((err) => console.error('MongoDB connection error:', err));
+
 
 const UserSchema = new mongoose.Schema({
     login: { type: String, unique: true, required: true },
