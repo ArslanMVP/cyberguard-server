@@ -1,28 +1,16 @@
-require('dotenv').config({ path: __dirname + '/.env' });
-
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 
-if (!process.env.MONGO_URI || !process.env.MONGO_URI.startsWith('mongodb')) {
-    console.error('ERROR: MONGO_URI is not set or invalid');
-    console.error('Current MONGO_URI:', process.env.MONGO_URI);
-    process.exit(1);
-} else {
-    console.log('MONGO_URI is valid. Trying to connect...');
-}
-
+console.log(process.env.MONGO_URI);
 mongoose.connect(process.env.MONGO_URI, { dbName: 'mydatabase' })
     .then(() => console.log('MongoDB connected'))
-    .catch((err) => {
-        console.error('MongoDB connection error:');
-        console.error(err.message);
-        process.exit(1);
-    });
+    .catch((err) => console.error('MongoDB connection error:', err));
 
 
 const UserSchema = new mongoose.Schema({
@@ -152,5 +140,5 @@ app.post('/unlock-achievement', async (req, res) => {
     }
 });
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
