@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server.js"
-},
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -17,7 +17,7 @@
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
     "lowdb": "^7.0.1",
-    "mongoose": "^8.13.1"
+    "mongoose": "^8.14.1"
   },
   "devDependencies": {
     "eslint": "^9.15.0"
