@@ -1,16 +1,29 @@
+require('dotenv').config({ path: __dirname + '/.env' });
+
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-require('dotenv').config();
 
 const app = express();
 app.use(express.json());
 
-console.log(process.env.MONGO_URI);
+// Проверка MONGO_URI
+if (!process.env.MONGO_URI || !process.env.MONGO_URI.startsWith('mongodb')) {
+    console.error('ERROR: MONGO_URI is not set or invalid');
+    console.error('Current MONGO_URI:', process.env.MONGO_URI);
+    process.exit(1); // Остановить сервер
+} else {
+    console.log('MONGO_URI is valid. Trying to connect...');
+}
+
 mongoose.connect(process.env.MONGO_URI, { dbName: 'mydatabase' })
     .then(() => console.log('MongoDB connected'))
-    .catch((err) => console.error('MongoDB connection error:', err));
+    .catch((err) => {
+        console.error('MongoDB connection error:');
+        console.error(err.message);
+        process.exit(1); // Остановить сервер при ошибке подключения
+    });
 
 
 const UserSchema = new mongoose.Schema({
